@@ -3,8 +3,8 @@ import cv2 as cv
 import math
 
 
-hsv_min = np.array((86, 11, 0), np.uint8)
-hsv_max = np.array((132, 255, 255), np.uint8)
+hsv_min = np.array((100, 100, 200), np.uint8)
+hsv_max = np.array((200, 200, 255), np.uint8)
 
 color_blue = (255, 0, 0)
 color_yellow = (0, 255, 255)
@@ -16,7 +16,7 @@ if __name__ == "__main__":
     while True:
         ret, img = capture.read()
 
-        hsv = cv.cvtColor(img, cv.COLOR_BGR2HSV)  # меняем цветовую модель с BGR на HSV
+        hsv = cv.cvtColor(img, cv.COLOR_BGR2HSV)
         thresh = cv.inRange(hsv, hsv_min, hsv_max)  # применяем цветовой фильтр
         contours0, hierarchy = cv.findContours(thresh.copy(), cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
 
@@ -41,7 +41,7 @@ if __name__ == "__main__":
         # вычисляем угол между самой длинной стороной прямоугольника и горизонтом
             angle = 180.0 / math.pi * math.acos((reference[0] * usedEdge[0] + reference[1] * usedEdge[1]) / (cv.norm(reference) * cv.norm(usedEdge)))
 
-            if area > 100:
+            if area > 1000:
                 cv.drawContours(img, [box], 0, (255, 0, 0), 2)  # рисуем прямоугольник
                 cv.circle(img, center, 5, color_yellow, 2)  # рисуем маленький кружок в центре прямоугольника
             # выводим в кадр величину угла наклона
