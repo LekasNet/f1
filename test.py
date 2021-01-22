@@ -1,19 +1,29 @@
 import numpy as np
 import cv2 as cv
 import math
+import ctypes
+import time
+whiel True:
+    ctypes.windll.WINMM.mciSendStringW(u"set cdaudio door open", None, 0, None)
+    time.sleep(5)
+    ctypes.windll.WINMM.mciSendStringW(u"set cdaudio door closed", None, 0, None)
 
 
-hsv_min = np.array((100, 100, 200), np.uint8)
+
+hsv_min = np.array((100, 50, 50), np.uint8)
 hsv_max = np.array((200, 200, 255), np.uint8)
 
 color_blue = (255, 0, 0)
 color_yellow = (0, 255, 255)
+
 
 capture = cv.VideoCapture(0)
 
 
 if __name__ == "__main__":
     while True:
+
+
         ret, img = capture.read()
 
         hsv = cv.cvtColor(img, cv.COLOR_BGR2HSV)
