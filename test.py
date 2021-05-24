@@ -3,7 +3,7 @@ import cv2 as cv
 import math
 import ctypes
 import time
-whiel True:
+while True:
     ctypes.windll.WINMM.mciSendStringW(u"set cdaudio door open", None, 0, None)
     time.sleep(5)
     ctypes.windll.WINMM.mciSendStringW(u"set cdaudio door closed", None, 0, None)

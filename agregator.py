@@ -2,6 +2,11 @@ from time import sleep
 from random import randint
 import sys
 
+wheel_temp = {}
+
+def wh_tmp(sign):
+	return wheel_temp[sign]
+
 def input_tmp(signature): #choose signature
 	return None
 
@@ -9,7 +14,7 @@ def input_tmp(signature): #choose signature
 class Temperature_dot():
 	def __init__(self, signature):
 		self.signature = signature
-		self.temperature = 0
+		self.temperature = 120
 
 	def temp(self):
 		return self.temperature
@@ -26,29 +31,35 @@ class Temperature_contoure():
 		self.contoure_signature = cont_sign
 		self.tmps = {}
 		for i in range(8):
-			self.tmps["tmp{}".format(i)] = Temperature_dot(None) #choose signature
+			self.tmps["tmp{}".format(i)] = Temperature_dot(cont_sign * 10 + i) #choose signature
 
 	def update(self):
 		for i in self.tmps:
 			self.tmps[i] = input_tmp(self.tmps[i].sign())
 		return None
 
+	def display_all(self):
+		print('\r' + '\t'.join([str(self.tmps[i].temp()) for i in self.tmps.keys()]))
+		return '\r' + '\t'.join([str(self.tmps[i].temp()) for i in self.tmps.keys()])
+
 	def display(self):
-		pass
+		return sum([self.tmps[i].temp() for i in self.tmps.keys()]) / len(self.tmps)
 
 
 class Wheel():
-	def __init__(self):
-		self.contoure_1 = Temperature_contoure(None)
-		self.contoure_2 = Temperature_contoure(None)
-		self.contoure_3 = Temperature_contoure(None)
-		self.contoure_4 = Temperature_contoure(None)
+	def __init__(self, signature):
+		global wheel_temp
+		self.signature = signature
+		self.contoure_1 = Temperature_contoure(signature)
+		self.contoure_2 = Temperature_contoure(signature)
+		self.contoure_3 = Temperature_contoure(signature)
+		self.contoure_4 = Temperature_contoure(signature)
+		wheel_temp[signature] = {
+			"contoure_1": self.contoure_1,
+			"contoure_2": self.contoure_2,
+			"contoure_3": self.contoure_3,
+			"contoure_4": self.contoure_4
+		}
 
-
-wheel_1 = Wheel()
-while True:
-  sys.stdout.write('\r' + '\t'.join([str(x) for x in [wheel_1.contoure_1.tmps[f"tmp{i}"].temperature for i in range(8)]]))
-  sleep(1)
-  for i in range(8):
-    last_tmp = wheel_1.contoure_1.tmps[f"tmp{i}"].temperature
-    wheel_1.contoure_1.tmps[f"tmp{i}"].tmp_upd(last_tmp - randint(-5, 5))
+	def contoure_temp_upd(self):
+		pass
