@@ -33,9 +33,9 @@ class Temperature_contoure():
 		for i in range(8):
 			self.tmps["tmp{}".format(i)] = Temperature_dot(cont_sign * 10 + i) #choose signature
 
-	def update(self):
+	def update(self, temp):
 		for i in self.tmps:
-			self.tmps[i] = input_tmp(self.tmps[i].sign())
+			self.tmps[i].tmp_upd(temp)
 		return None
 
 	def display_all(self):
@@ -61,5 +61,6 @@ class Wheel():
 			"contoure_4": self.contoure_4
 		}
 
-	def contoure_temp_upd(self):
-		pass
+	def temp_update(self, sign, argue):
+		for i in wheel_temp[sign]:
+			wheel_temp[sign][i].update(argue)
